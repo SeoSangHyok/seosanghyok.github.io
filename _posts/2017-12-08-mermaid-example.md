@@ -7,7 +7,7 @@ tags: [mermaid]
 
 ### 1. Pie chart
 
-```mermaid!
+```mermaid
 pie title Pets adopted by volunteers
   "Dogs" : 386
   "Cats" : 85
@@ -28,7 +28,7 @@ sequenceDiagram
   Alice->John: Yes... John, how are you?
 @endmermaid
 
-```mermaid!
+```mermaid
 graph TD
 A[Christmas] -->|Get money| B(Go shopping)
   B --> C{Let me think}
@@ -38,7 +38,7 @@ A[Christmas] -->|Get money| B(Go shopping)
 ```
 
 ### 3. Class diagram
-```mermaid!
+```mermaid
 classDiagram
 Animal <|-- Duck
 Animal <|-- Fish
