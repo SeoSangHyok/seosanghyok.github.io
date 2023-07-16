@@ -16,7 +16,7 @@ tags: [plantuml, mermaid]
 
 [https://plantuml.com/ko/](https://plantuml.com/ko/)
 
-![Plantuml Online Server](/assets/images/2023/2023-07-05/01.png)
+![Plantuml Online Server](/assets/images/2023/07/2023-07-05/01.png)
 
 ### 해당 패이지는 Plantuml의 설명서도 포함하고 있으므로 작성할 때 용이하다. (하지만 인텔리 센스는 지원되지 않아 다소 불편..) 
 
@@ -27,6 +27,6 @@ tags: [plantuml, mermaid]
 
 [https://mermaid.js.org/](https://mermaid.js.org/)
 
-![Mermaid Live Editor](/assets/images/2023/2023-07-05/02.png)
+![Mermaid Live Editor](/assets/images/2023/07/2023-07-05/02.png)
 
 ### 해당 패이지도 Plantuml과 비슷하게 공홈이며 설명서도 포함하고 있으므로 작성할 때 용이하다. 더불어 Mermaid의 경우 라이브에디터에서도 인텔리센스가 지원된다! 
