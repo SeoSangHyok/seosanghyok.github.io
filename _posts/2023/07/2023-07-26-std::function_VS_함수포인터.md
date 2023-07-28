@@ -54,7 +54,7 @@ int main()
 }
 ```
 
-### std::function
+#### std::function
 
 위와같은 상황에서 function 클래스는 아래와 같이 선언할 수 있다.
 ```
@@ -73,6 +73,8 @@ int main()
     stdFunc(200.0);
 }
 ```
+
+std::function이 함수포인터보다 좀더 깔끔하고 사용하기 쉬운것을 볼 수 있다.
 
 ### 콜링 컨벤션 처리
 
@@ -93,20 +95,20 @@ int __stdcall TestFunc2(double param)
 
 int main()
 {
-    // 함수포인터와 std::function 객체 생성
-    typedef int(*cdclFpType)(double);
+    // 함수포인터 타입과 std::function 객체 생성
+    typedef int(*cdclFpType)(double);           // 콜링 컨밴션을 명시하지 않으면 기본적으로 __cdecl 콜링 컨벤션을 따른다.
     std::function<unsigned(double)> stdFunc;
     
-    cdclFpType cdclFp = TestFunc;  // 가능
-    stdFunc =  TestFunc;        // 역시 가능
+    cdclFpType cdclFp = TestFunc;               // 가능
+    stdFunc =  TestFunc;                        // 역시 가능
 
-    cdclFp = TestFunc2;            // 에러!! TestFunc2의 콜링 컨벤션은 __stdcall이다
+    cdclFp = TestFunc2;                         // 에러!! TestFunc2의 콜링 컨벤션은 __stdcall이다
 
     // 아래처럼 __stdcall 콜링컨벤션을 사용하는 함수포인터 타입을 만들어야 대입가능
     typedef int(__stdcall*stdcallFpType)(double); 
     stdcallFpType stdcallFp = TestFunc2
 
-    stdFunc = TestFunc2;        // 가능!! std::function은 콜링컨벤션 호환된다.
+    stdFunc = TestFunc2;                        // 가능!! std::function은 콜링컨벤션 호환된다.
 }
 ```
 
@@ -149,20 +151,21 @@ int main()
     CTestClass b(200);
 
     // 사용하고자 하는 클래스 맴버 함수 포인터를 인스턴스와 함께 사용한다. 연산자 우선 순위가 있어 괄호로 묶어서 사용
-    (a.*pCfp)();
-    (a.*pCfp2)();
-    (b.*pCfp)();
-    (b.*pCfp2)();
+    (a.*pCfp)();    // 100
+    (a.*pCfp2)();   // 1000
+    (b.*pCfp)();    // 200
+    (b.*pCfp2)();   // 2000
 }
 ```
 위와 같이 클래스 맴버함수의 함수포인터를 호출할 경우 대상 인스턴스를 명확히 해야 한다.
 
 #### std::function
 
-std::function도 마찬가지로 사용하고자 하는 맴버를 명시해야 한다. 다만 함수포인터와 다르게 내부적으로 호출한 객체의 래퍼런스를 넘겨준다(this 포인터를 생각하면 되겠다)
+std::function도 마찬가지로 사용하고자 하는 맴버를 명시해야 한다. 다만 함수포인터와 다르게 내부적으로 **호출한 객체의 래퍼런스를 넘겨준다**(this 포인터를 생각하면 되겠다)
 
 ``` cpp
-// 클래스 맴버 함수 포인터 선언 및 할당
+// 클래스 맴버 함수 포인터 선언 및 할당.
+// function 객체 생성 시 인자로 CTestClass의 레퍼런스를 넘기는것에 주목하자
 std::function<int(CTestClass&)> ClassFunc = &CTestClass::testFunc1;
 
 // 클래스 인스턴스 생성
@@ -176,3 +179,32 @@ ClassFunc = &CTestClass::testFunc2;
 ClassFunc(a);   // a.testFunc2() 와 같음
 ClassFunc(b);   // b.testFunc2() 와 같음
 ```
+
+### const 맴버 함수 처리 
+
+위 예제에서 CTestClass::testFunc3 은 const 함수다. 그렇기 때문에 위에서 선언한 함수포인터나 function 객체를 사용하면 에러가 난다.(상수 함수를 비상수 함수 포인터(function객체)에 할당하려 했으니까..)
+
+``` cpp
+typedef int(CTestClass::*ClassfpType)();
+ClassfpType pCfp2 = &CTestClass::testFunc2;     // 이것은 가능하지만..
+pCfp2 = &CTestClass::testFunc3;                 // 이것은 에러다. testFunc3이 const(상수) 함수이므로..
+
+std::function<int(CTestClass&)> ClassFunc;
+ClassFunc = &CTestClass::testFunc3;             // 같은 이유로 이것도 에러
+```
+
+const 함수는 const 인스턴스에서만 호출 가능하므로 아래처럼 선언해서 사용해야 한다.
+``` cpp
+typedef int(const CTestClass::*ConstClassfpType)();
+ConstClassfpType pCfp3 = &CTestClass::testFunc3; // OK
+
+const CTestClass c(400);
+(c.*pCfp3)();                                    // 40000
+
+
+std::function<int(const CTestClass&)> ClassFunc2; // function 객체도 const 객체의 레퍼런스를 받도록 하면..
+ClassFunc = &CTestClass::testFunc3;              // OK
+ClassFunc2(3);                                   // 호출 가능~
+```
+
+#### 
