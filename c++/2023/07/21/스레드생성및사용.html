@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>스레드 생성 및 사용 | My Dev / Study Archive</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="스레드 생성 및 사용">
+<meta name="author" content="Seo Sang Hyok">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="스레드 생성 및 사용">
+<meta property="og:description" content="스레드 생성 및 사용">
+<link rel="canonical" href="/c++/2023/07/21/%EC%8A%A4%EB%A0%88%EB%93%9C%EC%83%9D%EC%84%B1%EB%B0%8F%EC%82%AC%EC%9A%A9.html">
+<meta property="og:url" content="/c++/2023/07/21/%EC%8A%A4%EB%A0%88%EB%93%9C%EC%83%9D%EC%84%B1%EB%B0%8F%EC%82%AC%EC%9A%A9.html">
+<meta property="og:site_name" content="My Dev / Study Archive">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-07-21T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="스레드 생성 및 사용">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Seo Sang Hyok"},"dateModified":"2023-07-21T00:00:00+00:00","datePublished":"2023-07-21T00:00:00+00:00","description":"스레드 생성 및 사용","headline":"스레드 생성 및 사용","mainEntityOfPage":{"@type":"WebPage","@id":"/c++/2023/07/21/%EC%8A%A4%EB%A0%88%EB%93%9C%EC%83%9D%EC%84%B1%EB%B0%8F%EC%82%AC%EC%9A%A9.html"},"url":"/c++/2023/07/21/%EC%8A%A4%EB%A0%88%EB%93%9C%EC%83%9D%EC%84%B1%EB%B0%8F%EC%82%AC%EC%9A%A9.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="icon" href="">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="My Dev / Study Archive">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/">
+  <img class="site-favicon" title="My Dev / Study Archive" src="" onerror="this.style.display='none'">
+  My Dev / Study Archive
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/about.html">ABOUT</a><a class="page-link" href="/archives.html">ARCHIVES</a><a class="page-link" href="/categories.html">CATEGORIES</a><a class="page-link" href="/">HOME</a><a class="page-link" href="/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">스레드 생성 및 사용</h1>
+  <h2 class="post-subtitle">스레드 사용법 및 자작 스레드 클래스</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-07-21T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Jul 21, 2023
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 7 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/tags.html#c++">#c++</a><a class="post-tag" href="/tags.html#thread">#thread</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="스레드-생성-및-사용">스레드 생성 및 사용</h2>
+
+<p>멀티 스레드를 위해 스래드 사용법을 기술한다.</p>
+
+<h3 id="스래드-생성">스래드 생성</h3>
+
+<p>스래드 생성은 <strong>CreateThread()</strong>, <strong>_beginthreadex()</strong>, <del>_beginthread()</del> 로 생성할 수 있다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// CreateThread</span>
+<span class="n">HANDLE</span> <span class="n">WINAPI</span> <span class="nf">CreateThread</span><span class="p">(</span>
+    <span class="n">_In_opt_</span> <span class="n">LPSECURITY_ATTRIBUTES</span> <span class="n">lpThreadAttributes</span><span class="p">,</span>
+    <span class="n">_In_</span> <span class="n">SIZE_T</span> <span class="n">dwStackSize</span><span class="p">,</span>
+    <span class="n">_In_</span> <span class="n">LPTHREAD_START_ROUTINE</span> <span class="n">lpStartAddress</span><span class="p">,</span>
+    <span class="n">_In_opt_</span> <span class="n">LPVOID</span> <span class="n">lpParameter</span><span class="p">,</span>
+    <span class="n">_In_</span> <span class="n">DWORD</span> <span class="n">dwCreationFlags</span><span class="p">,</span>
+    <span class="n">_Out_opt_</span> <span class="n">LPDWORD</span> <span class="n">lpThreadId</span>
+<span class="p">);</span>
+
+<span class="c1">// _beginthreadex</span>
+<span class="n">_ACRTIMP</span> <span class="kt">uintptr_t</span> <span class="kr">__cdecl</span> <span class="nf">_beginthreadex</span><span class="p">(</span>
+    <span class="n">_In_opt_</span>  <span class="kt">void</span><span class="o">*</span>                    <span class="n">_Security</span><span class="p">,</span>
+    <span class="n">_In_</span>      <span class="kt">unsigned</span>                 <span class="n">_StackSize</span><span class="p">,</span>
+    <span class="n">_In_</span>      <span class="n">_beginthreadex_proc_type</span> <span class="n">_StartAddress</span><span class="p">,</span>
+    <span class="n">_In_opt_</span>  <span class="kt">void</span><span class="o">*</span>                    <span class="n">_ArgList</span><span class="p">,</span>
+    <span class="n">_In_</span>      <span class="kt">unsigned</span>                 <span class="n">_InitFlag</span><span class="p">,</span>
+    <span class="n">_Out_opt_</span> <span class="kt">unsigned</span><span class="o">*</span>                <span class="n">_ThrdAddr</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="_beginthread-는-사용하지-말자">_beginthread() 는 사용하지 말자.</h3>
+
+<p>_beginthread()함수는 스래드 생성 후 스래드를 컨트롤 할수 없으며 보안문제도 있다. 걍 없는 함수다 생각하고 사용하지 말것.</p>
+
+<h3 id="사용-예">사용 예</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">unsigned</span> <span class="n">WINAPI</span> <span class="nf">ThreadFunction</span><span class="p">(</span><span class="n">LPVOID</span> <span class="n">param</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">Sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+    <span class="p">}</span>    
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">HANDLE</span> <span class="n">hThreadHandle</span><span class="p">{</span><span class="n">INVALID_HANDLE_VALUE</span><span class="p">};</span>
+    <span class="n">DWORD</span> <span class="n">dwThreadID</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">str</span> <span class="o">=</span> <span class="s">"This is Thread Func"</span>
+
+    <span class="n">hThreadHandle</span> <span class="o">=</span> <span class="p">(</span><span class="n">HANDLE</span><span class="p">)</span><span class="o">::</span><span class="n">_beginthreadex</span><span class="p">(</span>
+        <span class="nb">nullptr</span><span class="p">,</span>    <span class="c1">// 1. 보안속성 -&gt; null을 주면 부모 프로세스의 보안 속성을 가져간다.</span>
+        <span class="mi">0</span><span class="p">,</span>          <span class="c1">// 2. 스래드 스텍 사이즈 0으로 하면 일반적으로 1MB</span>
+        <span class="n">ThreadFunction</span><span class="p">,</span> <span class="c1">// 3. 수행할 함수</span>
+        <span class="p">(</span><span class="n">LPVOID</span><span class="p">)</span><span class="n">str</span><span class="p">,</span>    <span class="c1">// 4. 인자</span>
+        <span class="mi">0</span><span class="p">,</span>              <span class="c1">// 5. 생성 플레그</span>
+        <span class="o">&amp;</span><span class="n">dwThreadID</span>     <span class="c1">// 생성 된 스래드 ID</span>
+    <span class="p">);</span>
+
+    <span class="cm">/* 
+    혹은
+    hThreadHandle = (HANDLE)::CreateThread(
+    nullptr, 
+    0, 
+    ThreadFunction, (LPVOID)str,
+    0, 
+    &amp;dwThreadID
+    );
+    */</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<hr>
+
+<h4 id="인자들의-설명">인자들의 설명</h4>
+
+<h5 id="1-보안-속성">1. 보안 속성</h5>
+
+<p>보안속성은 일반적으로 NULL(nullptr)을 넣어준다. 이럴경우 호출한 프로세스의 보안 속성을 따라간다.</p>
+
+<h5 id="2-스레드-스텍-사이즈">2. 스레드 스텍 사이즈</h5>
+
+<p>스래드도 호출되는 함수의 성질을 띄기 때문에 내부적으로 스텍이 잡힌다. 0을 주면 기본적으로 1MB의 스택 사이즈가 잡힌다. 다른 값으로 넣으면 해당 크기만큰 스택이 잡힌다.</p>
+
+<h5 id="3-스레드-함수">3. 스레드 함수</h5>
+
+<p>수행할 스래드 함수가 호출된다. winapi 상으로 호출되는 스레드 함수는 아래의 형식이다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">typedef</span> <span class="nf">unsigned</span> <span class="p">(</span><span class="kr">__stdcall</span><span class="o">*</span> <span class="n">_beginthreadex_proc_type</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>일반적으로 c/c++의 호출규약은 __cdecl 형식인데 스레드 함수는 __stdcall 형식이다. 둘의 차이는 함수 내부 스택을 호출한쪽(caller)에서 정리하느냐(<strong>__cdecl</strong>) 호출을 당한쪽(callee). 즉 스래드 함수에서 정리하느냐(<strong>__stdcall</strong>)의 차이가 있다. 아마도 스레드의 경우 종료시점이 명확하지 않기때문에 피호출쪽에서 스텍을 정리하는게 아닐까 하는 생각을 한다.(찾아보면 둘의 차이가 없다고 하는 사람들도 있다..)</p>
+
+<h5 id="4-전달인자">4. 전달인자</h5>
+
+<p>전달인자는 void<em>형식으로 전달한다. 만약 다수의 인자가 필요하면 구조체를 하나 선언해서 전달하면 될것이다. void</em>형으로 전달되니 사용하고자 하는 형으로 케스팅 후 사용한다.</p>
+
+<h5 id="5-생성-플래그">5. 생성 플래그</h5>
+
+<p>0으로 주면 호출즉시 스래드 함수가 수행된다. 만약 <strong>CREATE_SUSPENDED</strong> 옵션으로 생성하면 스래드는 일시정지(suspended) 상태로 생성된다. 이경우 ResumeThread() 함수로 직접 스래드를 작동 시켜야 한다.</p>
+
+<hr>
+
+<h3 id="createthread-vs-_beginthreadex">CreateThread VS _beginthreadex</h3>
+
+<p>두함수는 TLS처리 이외엔 같은 함수라고 보면 된다. strtok함수와 같이 내부적으로 정적(static)영역을 사용하는 함수의 경우 같은 함수를 동시에 여러 스레드에서 호출하면 동기화 문제가 발생할 수 있는데 _beginthreadex 의 경우 내부적으로 TLS를 생성해서 사용하기 때문에 이런 문제가 발생하지 않는다. 그러니 속편히 윈도우계열에선  _beginthreadex 를 사용하자 하는게 나을수도 있을듯 하다.</p>
+
+<h3 id="간략한-스레드-클래스">간략한 스레드 클래스</h3>
+
+<p>위 기능을 지원하는 스레드 클래스를 만들어 보았다. 스래드를 활용하고자 하는 경우 아래 클래스를 상속받아 ThreadFunc()를 제정의 해서 사용하면 된다. 보완할점이 있을수도 있겠지만 도움이 될까 해서 공유한다.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1">// Thread.h</span>
+<span class="k">class</span> <span class="nc">CThread</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="n">CThread</span><span class="p">();</span>
+    <span class="o">~</span><span class="n">CThread</span><span class="p">();</span>
+
+    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">ThreadFunc</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">void</span> <span class="n">Start</span><span class="p">(</span><span class="kt">bool</span> <span class="n">StartImmediate</span> <span class="o">=</span> <span class="nb">true</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">Join</span><span class="p">(</span><span class="n">DWORD</span> <span class="n">waitMilisec</span> <span class="o">=</span> <span class="n">INFINITE</span><span class="p">);</span>
+    <span class="kt">void</span> <span class="n">Suspend</span><span class="p">();</span>
+    <span class="kt">void</span> <span class="n">Resume</span><span class="p">();</span>
+
+    <span class="n">HANDLE</span> <span class="n">GetThreadHandle</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">hThreadHandle</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="k">protected</span><span class="o">:</span>
+    <span class="k">static</span> <span class="kt">unsigned</span> <span class="n">WINAPI</span> <span class="nf">ThreadStartRoutine</span><span class="p">(</span><span class="n">LPVOID</span> <span class="n">param</span><span class="p">);</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">HANDLE</span> <span class="n">hThreadHandle</span><span class="p">{</span> <span class="n">INVALID_HANDLE_VALUE</span> <span class="p">};</span>
+    <span class="n">UINT</span> <span class="n">uiThreadID</span><span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+    <span class="kt">bool</span> <span class="n">bJobEnded</span><span class="p">{</span> <span class="nb">true</span> <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="c1">// Thread.cpp</span>
+<span class="n">CThread</span><span class="o">::</span><span class="n">CThread</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">hThreadHandle</span> <span class="o">=</span> <span class="n">INVALID_HANDLE_VALUE</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">CThread</span><span class="o">::~</span><span class="n">CThread</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">hThreadHandle</span> <span class="o">!=</span> <span class="n">INVALID_HANDLE_VALUE</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">CloseHandle</span><span class="p">(</span><span class="n">hThreadHandle</span><span class="p">);</span>
+    <span class="p">}</span>
+            
+<span class="p">}</span>
+
+<span class="kt">unsigned</span> <span class="n">WINAPI</span> <span class="n">CThread</span><span class="o">::</span><span class="n">ThreadStartRoutine</span><span class="p">(</span><span class="n">LPVOID</span> <span class="n">param</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">CThread</span><span class="o">*</span> <span class="n">pThread</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">CThread</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">param</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pThread</span> <span class="o">!=</span> <span class="nb">nullptr</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">pThread</span><span class="o">-&gt;</span><span class="n">ThreadFunc</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CThread</span><span class="o">::</span><span class="n">Start</span><span class="p">(</span><span class="kt">bool</span> <span class="n">StartImmediate</span><span class="cm">/* = true*/</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">DWORD</span> <span class="n">dwCreateFlag</span> <span class="o">=</span> <span class="n">StartImmediate</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="n">CREATE_SUSPENDED</span><span class="p">;</span>
+
+    <span class="n">hThreadHandle</span> <span class="o">=</span> <span class="p">(</span><span class="n">HANDLE</span><span class="p">)</span><span class="o">::</span><span class="n">_beginthreadex</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">CThread</span><span class="o">::</span><span class="n">ThreadStartRoutine</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="n">dwCreateFlag</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">uiThreadID</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CThread</span><span class="o">::</span><span class="n">Join</span><span class="p">(</span><span class="n">DWORD</span> <span class="n">waitMilisec</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">hThreadHandle</span> <span class="o">==</span> <span class="n">INVALID_HANDLE_VALUE</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">WaitForSingleObject</span><span class="p">(</span><span class="n">hThreadHandle</span><span class="p">,</span> <span class="n">waitMilisec</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CThread</span><span class="o">::</span><span class="n">Suspend</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">hThreadHandle</span> <span class="o">!=</span> <span class="n">INVALID_HANDLE_VALUE</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="o">::</span><span class="n">SuspendThread</span><span class="p">(</span><span class="n">hThreadHandle</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CThread</span><span class="o">::</span><span class="n">Resume</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">hThreadHandle</span> <span class="o">!=</span> <span class="n">INVALID_HANDLE_VALUE</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="o">::</span><span class="n">ResumeThread</span><span class="p">(</span><span class="n">hThreadHandle</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="사용-예-1">사용 예</h4>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">CTestThread</span> <span class="o">:</span><span class="k">public</span> <span class="n">CThread</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+	<span class="n">CTestThread</span><span class="p">()</span> <span class="o">:</span> <span class="n">CThread</span><span class="p">()</span> <span class="p">{;}</span>
+	<span class="o">~</span><span class="n">CTestThread</span><span class="p">()</span> <span class="p">{;}</span>
+
+    <span class="c1">// 수행하고자 하는 함수를 제정의해서 사용한다.</span>
+	<span class="k">virtual</span> <span class="kt">void</span> <span class="nf">ThreadFunc</span><span class="p">()</span>
+	<span class="p">{</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+			<span class="n">Sleep</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello World!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+
+	<span class="n">CTestThread</span> <span class="n">testThread</span><span class="p">;</span>    
+	<span class="n">testThread</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+	<span class="n">testThread</span><span class="p">.</span><span class="n">Join</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/tip/2023/07/16/%EC%9C%88%EB%8F%84%EC%9A%B010_%EB%AC%B4%EB%A3%8C%EC%82%AC%EC%9A%A9.html" title="윈도우10 무료사용법">윈도우10 무료사용법</a><a class="next" href="/c++/2023/07/26/std-function_VS_%ED%95%A8%EC%88%98%ED%8F%AC%EC%9D%B8%ED%84%B0.html" title="std::function_VS_함수포인터">std::function_VS_함수포인터</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/markdown/2015/02/28/test-markdown.html" title="std::function_VS_함수포인터">Test markdown</a></li>
+<li><a class="post-link" href="/visual/studio/2023/07/03/Visua_Studio_%EA%B8%80%EA%BC%B4%EC%B6%94%EC%B2%9C.html" title="std::function_VS_함수포인터">Visual Studio 글꼴추천</a></li>
+<li><a class="post-link" href="/junk/2017/05/20/this-post-demonstrates-post-content-styles.html" title="std::function_VS_함수포인터">This post demonstrates post content styles</a></li>
+<li><a class="post-link" href="/example/2017/12/04/plantuml-example.html" title="std::function_VS_함수포인터">Plantuml example</a></li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2023-2023 Seo Sang Hyok</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
